@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class startmenu : MonoBehaviour
 {
-
+    public GameObject timer;
     public Canvas Startmenu;
     public Canvas setings;
     public Canvas cirquitselector;
@@ -56,4 +56,5 @@ public class startmenu : MonoBehaviour
         // Sluit de toepassing af (werkt in build hopelijk)
         Application.Quit();
     }
+
 }
