@@ -61,7 +61,7 @@ WheelCollider:
     m_ExtremumValue: 2
     m_AsymptoteSlip: 1.8
     m_AsymptoteValue: 1.5
-    m_Stiffness: 1.5
+    m_Stiffness: 3
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -237,7 +237,7 @@ WheelCollider:
     m_ExtremumValue: 2
     m_AsymptoteSlip: 1.8
     m_AsymptoteValue: 1.5
-    m_Stiffness: 1.5
+    m_Stiffness: 3
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -308,7 +308,7 @@ WheelCollider:
     m_ExtremumValue: 2
     m_AsymptoteSlip: 1.8
     m_AsymptoteValue: 1.5
-    m_Stiffness: 1.5
+    m_Stiffness: 3
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -547,6 +547,7 @@ MonoBehaviour:
   - 1200
   - 2400
   - 4800
+  currentMaxSpeed: 0
   turnAngle: 60
   brakeStrenght: 2000
   currentSpeed: 0
@@ -644,7 +645,7 @@ WheelCollider:
     m_ExtremumValue: 2
     m_AsymptoteSlip: 1.8
     m_AsymptoteValue: 1.5
-    m_Stiffness: 1.5
+    m_Stiffness: 3
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
