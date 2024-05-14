@@ -312,7 +312,7 @@ TerrainCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1708450474}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 029dfdbb66cb15d40989e005132f3f72, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -437,10 +437,105 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1346227886086889360, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: m_Mass
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346227886086889360, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: m_ForwardFriction.m_Stiffness
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346227886086889360, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: m_SidewaysFriction.m_Stiffness
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2580310070745024412, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: m_CenterOfMass.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3249021846007460718, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: m_Mass
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3249021846007460718, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: m_ForwardFriction.m_Stiffness
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3249021846007460718, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: m_SidewaysFriction.m_Stiffness
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3249416480562981004, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: m_Mass
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3249416480562981004, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: m_ForwardFriction.m_Stiffness
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3249416480562981004, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: m_SidewaysFriction.m_Stiffness
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5876342181652991583, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: speed
+      value: 1200
+      objectReference: {fileID: 0}
+    - target: {fileID: 5876342181652991583, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: speed.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5876342181652991583, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: speed.Array.data[0]
+      value: -600
+      objectReference: {fileID: 0}
+    - target: {fileID: 5876342181652991583, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: speed.Array.data[1]
+      value: 1200
+      objectReference: {fileID: 0}
+    - target: {fileID: 5876342181652991583, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: speed.Array.data[2]
+      value: 2400
+      objectReference: {fileID: 0}
+    - target: {fileID: 5876342181652991583, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: speed.Array.data[3]
+      value: 4800
+      objectReference: {fileID: 0}
     - target: {fileID: 7247377026061937297, guid: d1cc916f9faf10c4191fa27f8c369617,
         type: 3}
       propertyPath: m_Name
       value: Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434520307537021422, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: m_Mass
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434520307537021422, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: m_ForwardFriction.m_Stiffness
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434520307537021422, guid: d1cc916f9faf10c4191fa27f8c369617,
+        type: 3}
+      propertyPath: m_SidewaysFriction.m_Stiffness
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

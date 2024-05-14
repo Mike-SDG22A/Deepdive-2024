@@ -25,12 +25,12 @@
                 },
                 {
                     "name": "Brake",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "b442ecab-8379-44fc-9aac-c4e63f0f9129",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Switch",
@@ -209,37 +209,103 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "",
-                    "id": "f3c9a998-9557-4e6f-a1ff-f06b1e8ff06f",
+                    "name": "Keyboard",
+                    "id": "519cd4f9-7482-472d-9c3a-3e5bb7584153",
+                    "path": "1DAxis(minValue=0)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "88814003-1b59-4db1-b664-22d29d0f0965",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "333be594-5753-49a0-a447-720f195dadfe",
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Brake",
                     "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Wheel",
+                    "id": "bad8d854-cb16-48ce-b85a-1aed997279ad",
+                    "path": "1DAxis(minValue=0)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake",
+                    "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "6df26ac3-297c-43fa-b336-05ff0b6bf52e",
+                    "name": "negative",
+                    "id": "ec9c5820-11e6-495a-a112-57d97a328a33",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "5f9b268c-b179-4ec3-8b11-4d7879ff6a27",
                     "path": "<Gamepad>/leftStick/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Brake",
                     "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Controller",
+                    "id": "b976ec9d-06b3-4f1a-a519-6bcf833e6eb9",
+                    "path": "1DAxis(minValue=0)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake",
+                    "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "b0ef4d5f-bc06-419c-b486-a9f0557703a4",
+                    "name": "negative",
+                    "id": "6ae7dc82-2287-49c1-a568-8fa0216986ae",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "ee99fe9a-cffd-44ba-8a8f-b06f22b132a9",
                     "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Brake",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "Wheel",
@@ -308,7 +374,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "1D Axis",
+                    "name": "Keyboard",
                     "id": "c63550d4-1fe5-4bc1-b989-ae1c20606985",
                     "path": "1DAxis(minValue=1)",
                     "interactions": "",
@@ -321,7 +387,7 @@
                 {
                     "name": "negative",
                     "id": "6334a816-ee0b-4b56-b9f1-5fca9b26a5c8",
-                    "path": "",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -332,7 +398,7 @@
                 {
                     "name": "positive",
                     "id": "ff4e0af1-be60-4d57-bca5-a89a7437a4da",
-                    "path": "<Keyboard>/anyKey",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
