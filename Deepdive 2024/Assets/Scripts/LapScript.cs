@@ -32,7 +32,7 @@ public class LapScript : MonoBehaviour
         checkPointCount++;
         if (checkPointCount > requiredCheckpoints)
         {
-            if (checkPointCount == 12)
+            if (checkPointCount == 48)
             {
                 LapCount++;
                 if (LapCount > 0)
