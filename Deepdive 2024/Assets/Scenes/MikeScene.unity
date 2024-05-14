@@ -450,7 +450,7 @@ PrefabInstance:
     - target: {fileID: 1346227886086889360, guid: d1cc916f9faf10c4191fa27f8c369617,
         type: 3}
       propertyPath: m_SidewaysFriction.m_Stiffness
-      value: 1.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2580310070745024412, guid: d1cc916f9faf10c4191fa27f8c369617,
         type: 3}
@@ -470,7 +470,7 @@ PrefabInstance:
     - target: {fileID: 3249021846007460718, guid: d1cc916f9faf10c4191fa27f8c369617,
         type: 3}
       propertyPath: m_SidewaysFriction.m_Stiffness
-      value: 1.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3249416480562981004, guid: d1cc916f9faf10c4191fa27f8c369617,
         type: 3}
@@ -485,7 +485,7 @@ PrefabInstance:
     - target: {fileID: 3249416480562981004, guid: d1cc916f9faf10c4191fa27f8c369617,
         type: 3}
       propertyPath: m_SidewaysFriction.m_Stiffness
-      value: 1.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5876342181652991583, guid: d1cc916f9faf10c4191fa27f8c369617,
         type: 3}
@@ -535,7 +535,7 @@ PrefabInstance:
     - target: {fileID: 8434520307537021422, guid: d1cc916f9faf10c4191fa27f8c369617,
         type: 3}
       propertyPath: m_SidewaysFriction.m_Stiffness
-      value: 1.5
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
