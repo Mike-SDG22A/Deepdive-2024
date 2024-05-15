@@ -89,7 +89,7 @@ public class CarController : MonoBehaviour
         foreach (var wheel in backWheels)
         {
             WheelFrictionCurve side = wheel.sidewaysFriction;
-            side.stiffness = Mathf.Clamp(slip - currentSpeed / 1000, 1, slip);
+            side.stiffness = Mathf.Clamp(slip - currentSpeed / 1500, 1, slip);
             wheel.sidewaysFriction = side;
         }
 
