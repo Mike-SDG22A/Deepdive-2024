@@ -10,7 +10,7 @@ public class LapScript : MonoBehaviour
     [SerializeField] GameObject currentCheckpoint;
     [SerializeField] Transform checkpointHolder;
     public int checkPointCount = 0;
-    private int requiredCheckpoints;
+    private int requiredCheckpoints = 5;
     public int LapCount = 0;
 
     #endregion checkpoint variables
@@ -80,7 +80,7 @@ public class LapScript : MonoBehaviour
     private void PlayerCheckpointCounter()
     {
         checkPointCount++;
-        if (checkPointCount > allCheckpoints.Count - 1)
+        if (checkPointCount > allCheckpoints.Count)
         {
             if (checkPointCount == allCheckpoints.Count - 1)
             {
