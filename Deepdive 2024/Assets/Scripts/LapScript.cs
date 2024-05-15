@@ -43,7 +43,7 @@ public class LapScript : MonoBehaviour
         if(LapCount == 3)
         {
             Debug.Log("You Win!");
-            timer.isTimerActive = false;
+            timer.finished = true;
         }   
     }
 

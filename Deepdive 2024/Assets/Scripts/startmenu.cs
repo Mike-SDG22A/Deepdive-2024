@@ -17,6 +17,10 @@ public class startmenu : MonoBehaviour
     public Canvas intirior;
     public Canvas extirior;
 
+    public Camera main;
+    public Camera inside;
+    public Camera outside;
+
     public Button start;
     public Button Setings;
     public Button quit;
@@ -51,13 +55,19 @@ public class startmenu : MonoBehaviour
     }
     public void Customization () 
     {
+        outside.gameObject.SetActive(true);
+        main.gameObject.SetActive(false);
         customization.gameObject.SetActive(true);
         Startmenu.gameObject.SetActive(false);
     }
     public void Back()
     {
+        main.gameObject.SetActive(true);
+        outside.gameObject.SetActive(false);
         Startmenu.gameObject.SetActive(true);
         setings.gameObject.SetActive(false);
+        cirquitselector.gameObject.SetActive(false);
+
     }
 
     public void Extirior ()
@@ -67,12 +77,17 @@ public class startmenu : MonoBehaviour
     }
     public void Intirior ()
     {
+        inside.gameObject.SetActive(true);
+        main.gameObject.SetActive(false);
         customization.gameObject.SetActive(false);
         intirior.gameObject.SetActive(true);
     }
 
     public void backc()
     {
+        inside.gameObject.SetActive(false);
+        main.gameObject.SetActive(false);
+        outside.gameObject.SetActive(true);
         intirior.gameObject.SetActive(false);
         extirior.gameObject.SetActive(false);
         customization.gameObject.SetActive(true);

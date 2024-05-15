@@ -43,8 +43,6 @@ public class carcustomization : MonoBehaviour
         PlayerPrefs.SetFloat("InsideColorR", insideRenderer.material.color.r);
         PlayerPrefs.SetFloat("InsideColorG", insideRenderer.material.color.g);
         PlayerPrefs.SetFloat("InsideColorB", insideRenderer.material.color.b);
-                    Debug.Log("test");
-
     }
 
     public void blue()
