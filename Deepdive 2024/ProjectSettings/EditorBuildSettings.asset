@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/damiantest.unity
+    guid: 20df9855cfc4e7d45bac0a7966beb1ce
   m_configObjects: {}
