@@ -69,9 +69,10 @@ public class CarController : MonoBehaviour
         }
         Brake();
 
-        if (rb.velocity.sqrMagnitude < 10)
+        if (rb.velocity.sqrMagnitude < 10 && gear != 0)
         {
-            currentMaxSpeed = speed[1];
+            gear = 1;
+            currentMaxSpeed = speed[gear];
             rmpCounter = 1000;
         }
 
@@ -149,15 +150,17 @@ public class CarController : MonoBehaviour
         float reduceSpeedAmount = 1;
 
         float tempBrake = brakeStrenght;
+        float tempBrakeBack = brakeStrenght;
 
         if (input.actions["Horizontal"].IsPressed() && input.actions["Brake"].IsPressed() && currentSpeed > 1000)
         {
             float horizontal = input.actions["Horizontal"].ReadValue<float>();
 
-            //rb.AddForce((transform.right * 2 + -transform.forward)  * -horizontal * currentSpeed * 4, ForceMode.Force);
+            rb.AddForce((transform.right * -horizontal + transform.forward * 0.2f) * currentSpeed, ForceMode.Force);
 
             reduceSpeedAmount = 0.02f;
-            tempBrake = 10;
+            tempBrake = 0;
+            tempBrakeBack = 10000;
             isDrifting = true;
         }
         else isDrifting = false;
@@ -166,12 +169,12 @@ public class CarController : MonoBehaviour
         {
             foreach (var wheel in frontWheels)
             {
-                wheel.sidewaysFriction = CreateFrictionCurve(1, 1, 2, 0.5f, sDriftSlip);
+                wheel.sidewaysFriction = CreateFrictionCurve(0.8f, 1, 2, 0.5f, sDriftSlip);
                 wheel.forwardFriction = CreateFrictionCurve(0.4f, 1, 1, 0.5f, fDriftSlip);
             }
             foreach (var wheel in backWheels)
             {
-                wheel.sidewaysFriction = CreateFrictionCurve(1, 1, 2, 0.5f, sDriftSlip);
+                wheel.sidewaysFriction = CreateFrictionCurve(0.8f, 0.5f, 0.545f, 0.5f, sDriftSlip);
                 wheel.forwardFriction = CreateFrictionCurve(0.4f, 1, 1, 0.5f, fDriftSlip);
             }
         }
@@ -189,7 +192,7 @@ public class CarController : MonoBehaviour
         }
         foreach (var wheel in backWheels)
         {
-            wheel.brakeTorque = tempBrake * brakePress;
+            wheel.brakeTorque = tempBrakeBack * brakePress;
         }
     }
 
