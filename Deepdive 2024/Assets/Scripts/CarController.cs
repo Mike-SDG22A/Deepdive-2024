@@ -68,6 +68,7 @@ public class CarController : MonoBehaviour
             }
         }
         Brake();
+        Drift();
 
         if (rb.velocity.sqrMagnitude < 10 && gear != 0)
         {
@@ -143,30 +144,19 @@ public class CarController : MonoBehaviour
         }
     }
 
-    void Brake()
+    void Drift()
     {
-        float brakePress = input.actions["Brake"].ReadValue<float>();
-
-        float reduceSpeedAmount = 1;
-
-        float tempBrake = brakeStrenght;
-        float tempBrakeBack = brakeStrenght;
-
-        if (input.actions["Horizontal"].IsPressed() && input.actions["Brake"].IsPressed() && currentSpeed > 1000)
+        if (input.actions["Drift"].IsPressed())
         {
             float horizontal = input.actions["Horizontal"].ReadValue<float>();
 
-            rb.AddForce((transform.right * -horizontal + transform.forward * 0.2f) * currentSpeed, ForceMode.Force);
+            rb.AddForce((transform.right * -horizontal + transform.forward * 0.2f + rb.velocity.normalized * 0.2f) * currentSpeed, ForceMode.Force);
 
-            reduceSpeedAmount = 0.02f;
-            tempBrake = 0;
-            tempBrakeBack = 10000;
+
+            float tempBrake = 0;
+            float tempBrakeBack = currentSpeed / 2f;
             isDrifting = true;
-        }
-        else isDrifting = false;
 
-        if (isDrifting)
-        {
             foreach (var wheel in frontWheels)
             {
                 wheel.sidewaysFriction = CreateFrictionCurve(0.8f, 1, 2, 0.5f, sDriftSlip);
@@ -177,22 +167,44 @@ public class CarController : MonoBehaviour
                 wheel.sidewaysFriction = CreateFrictionCurve(0.8f, 0.5f, 0.545f, 0.5f, sDriftSlip);
                 wheel.forwardFriction = CreateFrictionCurve(0.4f, 1, 1, 0.5f, fDriftSlip);
             }
+
+            foreach (var wheel in frontWheels)
+            {
+                wheel.brakeTorque = tempBrake;
+            }
+            foreach (var wheel in backWheels)
+            {
+                wheel.brakeTorque = tempBrakeBack;
+            }
         }
+        else
+        {
+            foreach (var wheel in backWheels)
+            {
+                wheel.brakeTorque = 0;
+            }
+            isDrifting = false;
+        }
+    }
+
+    void Brake()
+    {
+        float brakePress = input.actions["Brake"].ReadValue<float>();
 
         if (input.actions["Brake"].IsPressed())
         {
-            rmpCounter = Mathf.Lerp(rmpCounter, 1000, 10 * reduceSpeedAmount * Time.deltaTime);
-            currentSpeed = Mathf.Lerp(currentSpeed, 0, reduceSpeedAmount * Time.deltaTime);
+            rmpCounter = Mathf.Lerp(rmpCounter, 1000, 10 * Time.deltaTime);
+            currentSpeed = Mathf.Lerp(currentSpeed, 0,  Time.deltaTime);
         }
 
 
         foreach (var wheel in frontWheels)
         {
-            wheel.brakeTorque = tempBrake * brakePress;
+            wheel.brakeTorque = brakeStrenght * brakePress;
         }
         foreach (var wheel in backWheels)
         {
-            wheel.brakeTorque = tempBrakeBack * brakePress;
+            wheel.brakeTorque = brakeStrenght * brakePress;
         }
     }
 
