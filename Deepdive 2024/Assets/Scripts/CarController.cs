@@ -15,16 +15,20 @@ public class CarController : MonoBehaviour
     [SerializeField] float brakeStrenght = 2000;
     [SerializeField] float currentSpeed;
     [SerializeField] float currentTurnAngle;
-    [SerializeField] int gear = 1;
+    public int gear = 1;
+    [SerializeField] float downForce = 0.05f;
 
     PlayerInput input;
     Rigidbody rb;
+
+    public float GetMaxSpeed() => speed[gear];
+    public float GetCurrentSpeed() => currentSpeed;
 
     void Start()
     {
         currentMaxSpeed = speed[gear];
         rb = GetComponent<Rigidbody>();
-        rb.centerOfMass += Vector3.down * 2;
+        rb.centerOfMass += Vector3.down ;
         input = FindObjectOfType<PlayerInput>();
         if (!forwardDrive && !backDrive) backDrive = true;
     }
@@ -35,6 +39,11 @@ public class CarController : MonoBehaviour
         Brake();
         Movement();
         Turn();
+    }
+
+    private void FixedUpdate()
+    {
+        rb.AddRelativeForce(Vector3.down * downForce, ForceMode.VelocityChange);
     }
 
     void Turn()
@@ -125,6 +134,7 @@ public class CarController : MonoBehaviour
             StopCoroutine(Switch());
         }
     }
+
 
     IEnumerator Switch()
     {
