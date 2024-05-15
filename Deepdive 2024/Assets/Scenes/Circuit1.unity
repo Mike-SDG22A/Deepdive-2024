@@ -8632,11 +8632,6 @@ PrefabInstance:
       propertyPath: m_VolumeTrigger
       value: 
       objectReference: {fileID: 935229450}
-    - target: {fileID: 2155913532780236967, guid: d1cc916f9faf10c4191fa27f8c369617,
-        type: 3}
-      propertyPath: m_RenderPostProcessing
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

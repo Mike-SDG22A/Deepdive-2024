@@ -15,11 +15,17 @@ public class CarController : MonoBehaviour
     [SerializeField] float brakeStrenght = 2000;
     [SerializeField] float currentSpeed;
     [SerializeField] float currentTurnAngle;
+    [SerializeField] float fDriftSlip = 0.8f;
+    [SerializeField] float sDriftSlip = 0.022f;
     public float rmpCounter = 0;
     public int gear = 1;
     [SerializeField] float downForce = 0.05f;
     bool canDrive = true;
+    bool isDrifting = false;
     float slip;
+    float forwardSlip;
+    WheelFrictionCurve sideFriction;
+    WheelFrictionCurve forwardFriction;
 
     PlayerInput input;
     Rigidbody rb;
@@ -29,11 +35,18 @@ public class CarController : MonoBehaviour
 
     void Start()
     {
+        sideFriction = backWheels[0].sidewaysFriction;
+        forwardFriction = backWheels[0].forwardFriction;
+        forwardSlip = backWheels[0].forwardFriction.stiffness;
         slip = backWheels[0].sidewaysFriction.stiffness;
+
         currentMaxSpeed = speed[gear];
+
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass += Vector3.down ;
+
         input = FindObjectOfType<PlayerInput>();
+
         if (!forwardDrive && !backDrive) backDrive = true;
     }
 
@@ -41,7 +54,7 @@ public class CarController : MonoBehaviour
     {
         Shift();
         if (canDrive) Movement();
-        else 
+        else
         {
             currentSpeed = 0;
 
@@ -67,15 +80,19 @@ public class CarController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.AddRelativeForce(Vector3.down * downForce * rb.velocity.sqrMagnitude, ForceMode.Force);
+        rb.AddRelativeForce(Vector3.down * downForce * rb.velocity.sqrMagnitude * 0.8f, ForceMode.Force);
+        rb.AddForce(Vector3.down * downForce * rb.velocity.sqrMagnitude * 0.2f, ForceMode.Force);
     }
 
     void Turn()
     {
         float angle = input.actions["Horizontal"].ReadValue<float>();
 
+        float turn = turnAngle;
 
-        currentTurnAngle = turnAngle * angle;
+        if (isDrifting) turn = 60;
+
+        currentTurnAngle = turn * angle;
 
 
         foreach (var wheel in frontWheels)
@@ -91,19 +108,20 @@ public class CarController : MonoBehaviour
 
         rmpCounter = Mathf.Lerp(rmpCounter, (Mathf.Abs(input.actions["Vertical"].ReadValue<float>()) * 2 - 1) != -1 ? 10000 : 1000, Time.deltaTime);
 
-        foreach (var wheel in frontWheels)
+        if (!isDrifting)
         {
-            
-            WheelFrictionCurve side = wheel.sidewaysFriction;
-            side.stiffness = Mathf.Clamp(slip - currentSpeed / 1500, 1, slip);
-            wheel.sidewaysFriction = side;
-
-        }
-        foreach (var wheel in backWheels)
-        {
-            WheelFrictionCurve side = wheel.sidewaysFriction;
-            side.stiffness = Mathf.Clamp(slip - currentSpeed / 1500, 1, slip);
-            wheel.sidewaysFriction = side;
+            foreach (var wheel in frontWheels)
+            {
+                sideFriction.stiffness = Mathf.Clamp(slip - currentSpeed / 1500, 1, slip);
+                wheel.sidewaysFriction = sideFriction;
+                wheel.forwardFriction = forwardFriction;
+            }
+            foreach (var wheel in backWheels)
+            {
+                sideFriction.stiffness = Mathf.Clamp(slip - currentSpeed / 1500, 1, slip);
+                wheel.sidewaysFriction = sideFriction;
+                wheel.forwardFriction = forwardFriction;
+            }
         }
 
         if (currentSpeed * 10 < 10000 * gear && gear > 1) currentSpeed -= ((Mathf.Abs(input.actions["Vertical"].ReadValue<float>()) * currentMaxSpeed) - currentSpeed) * (1 / gear) * Time.deltaTime;
@@ -128,19 +146,50 @@ public class CarController : MonoBehaviour
     {
         float brakePress = input.actions["Brake"].ReadValue<float>();
 
+        float reduceSpeedAmount = 1;
+
+        float tempBrake = brakeStrenght;
+
+        if (input.actions["Horizontal"].IsPressed() && input.actions["Brake"].IsPressed() && currentSpeed > 1000)
+        {
+            float horizontal = input.actions["Horizontal"].ReadValue<float>();
+
+            //rb.AddForce((transform.right * 2 + -transform.forward)  * -horizontal * currentSpeed * 4, ForceMode.Force);
+
+            reduceSpeedAmount = 0.02f;
+            tempBrake = 10;
+            isDrifting = true;
+        }
+        else isDrifting = false;
+
+        if (isDrifting)
+        {
+            foreach (var wheel in frontWheels)
+            {
+                wheel.sidewaysFriction = CreateFrictionCurve(1, 1, 2, 0.5f, sDriftSlip);
+                wheel.forwardFriction = CreateFrictionCurve(0.4f, 1, 1, 0.5f, fDriftSlip);
+            }
+            foreach (var wheel in backWheels)
+            {
+                wheel.sidewaysFriction = CreateFrictionCurve(1, 1, 2, 0.5f, sDriftSlip);
+                wheel.forwardFriction = CreateFrictionCurve(0.4f, 1, 1, 0.5f, fDriftSlip);
+            }
+        }
+
         if (input.actions["Brake"].IsPressed())
         {
-            rmpCounter = Mathf.Lerp(rmpCounter, 1000, 10 * Time.deltaTime);
-            currentSpeed = Mathf.Lerp(currentSpeed, 0, Time.deltaTime);
+            rmpCounter = Mathf.Lerp(rmpCounter, 1000, 10 * reduceSpeedAmount * Time.deltaTime);
+            currentSpeed = Mathf.Lerp(currentSpeed, 0, reduceSpeedAmount * Time.deltaTime);
         }
+
 
         foreach (var wheel in frontWheels)
         {
-            wheel.brakeTorque = brakeStrenght * brakePress;
+            wheel.brakeTorque = tempBrake * brakePress;
         }
         foreach (var wheel in backWheels)
         {
-            wheel.brakeTorque = brakeStrenght * brakePress;
+            wheel.brakeTorque = tempBrake * brakePress;
         }
     }
 
@@ -196,6 +245,20 @@ public class CarController : MonoBehaviour
         }
     }
 
+
+    WheelFrictionCurve CreateFrictionCurve(float extremumSlip, float extremumValue, float asymptoteSlip, float asymptoteValue, float stiffness)
+     {
+        WheelFrictionCurve curve = new WheelFrictionCurve();
+
+        curve.extremumSlip = extremumSlip;
+        curve.extremumValue = extremumValue;
+        curve.asymptoteSlip = asymptoteSlip;
+        curve.asymptoteValue= asymptoteValue;
+        curve.stiffness = stiffness;
+
+
+        return curve;
+     }
 
     IEnumerator Switch()
     {
