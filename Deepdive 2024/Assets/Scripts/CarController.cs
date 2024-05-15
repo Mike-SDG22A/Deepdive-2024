@@ -41,6 +41,19 @@ public class CarController : MonoBehaviour
     {
         Shift();
         if (canDrive) Movement();
+        else 
+        {
+            currentSpeed = 0;
+
+            foreach (var wheel in frontWheels)
+            {
+                wheel.motorTorque = 0;
+            }
+            foreach (var wheel in backWheels)
+            {
+                wheel.motorTorque = 0;
+            }
+        }
         Brake();
 
         if (rb.velocity.sqrMagnitude < 10)

@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6793b0346fb1cae4380cc105d602505e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardDrive: 1
+  forwardDrive: 0
   backDrive: 1
   frontWheels:
   - {fileID: 4588527297170111462}
@@ -235,7 +235,7 @@ MonoBehaviour:
   - 2400
   - 4800
   currentMaxSpeed: 0
-  turnAngle: 60
+  turnAngle: 30
   brakeStrenght: 2000
   currentSpeed: 0
   currentTurnAngle: 0
