@@ -352,7 +352,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
+                    "name": "positive",
                     "id": "b2b80310-76a5-49bf-b362-77093ad4fe9f",
                     "path": "<Gamepad>/dpad/up",
                     "interactions": "",
@@ -363,7 +363,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "positive",
+                    "name": "negative",
                     "id": "4220c45a-d85e-4458-bbae-8bd474338b1b",
                     "path": "<Gamepad>/dpad/down",
                     "interactions": "",
