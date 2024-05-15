@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,17 +10,21 @@ public class Timer : MonoBehaviour
     public Text displayText;
     public Canvas timerui;
     public float startTime = 3f;
+    public bool isTimerActive = true;
 
     void Start()
     {
         Invoke("StartTimer", 3f);
+        isTimerActive = true;
     }
 
     void Update()
     {
 
-
-        timer = Time.time - startTime;
+        if (isTimerActive)
+        {
+            timer = Time.time - startTime;
+        }
 
         displayText.text = "Timer: " + timer.ToString("F2");
     }

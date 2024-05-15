@@ -12,6 +12,7 @@ public class LapScript : MonoBehaviour
     public int checkPointCount = 0;
     private int requiredCheckpoints = 5;
     public int LapCount = 0;
+    public Timer timer;
 
     #endregion checkpoint variables
 
@@ -40,6 +41,7 @@ public class LapScript : MonoBehaviour
         if(LapCount == 3)
         {
             Debug.Log("You Win!");
+            timer.isTimerActive = false;
         }   
     }
 
