@@ -15,8 +15,11 @@ public class CarController : MonoBehaviour
     [SerializeField] float brakeStrenght = 2000;
     [SerializeField] float currentSpeed;
     [SerializeField] float currentTurnAngle;
+    public float rmpCounter = 0;
     public int gear = 1;
     [SerializeField] float downForce = 0.05f;
+    bool canDrive = true;
+    float slip;
 
     PlayerInput input;
     Rigidbody rb;
@@ -26,6 +29,7 @@ public class CarController : MonoBehaviour
 
     void Start()
     {
+        slip = backWheels[0].sidewaysFriction.stiffness;
         currentMaxSpeed = speed[gear];
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass += Vector3.down ;
@@ -36,14 +40,21 @@ public class CarController : MonoBehaviour
     void Update()
     {
         Shift();
+        if (canDrive) Movement();
         Brake();
-        Movement();
+
+        if (rb.velocity.sqrMagnitude < 10)
+        {
+            currentMaxSpeed = speed[1];
+            rmpCounter = 1000;
+        }
+
         Turn();
     }
 
     private void FixedUpdate()
     {
-        rb.AddRelativeForce(Vector3.down * downForce, ForceMode.VelocityChange);
+        rb.AddRelativeForce(Vector3.down * downForce * rb.velocity.sqrMagnitude, ForceMode.Force);
     }
 
     void Turn()
@@ -62,7 +73,27 @@ public class CarController : MonoBehaviour
 
     void Movement()
     {
-        currentSpeed = Mathf.Abs(input.actions["Vertical"].ReadValue<float>()) * currentMaxSpeed;
+
+        currentSpeed += ((Mathf.Abs(input.actions["Vertical"].ReadValue<float>()) * currentMaxSpeed) - currentSpeed) * Mathf.Clamp(1 - Mathf.Pow(2.5f, gear > 0 ? gear : 1) / 10 + (2 * currentSpeed / 10000), 0.05f, 1) * Time.deltaTime;
+
+        rmpCounter = Mathf.Lerp(rmpCounter, (Mathf.Abs(input.actions["Vertical"].ReadValue<float>()) * 2 - 1) != -1 ? 10000 : 1000, Time.deltaTime);
+
+        foreach (var wheel in frontWheels)
+        {
+            
+            WheelFrictionCurve side = wheel.sidewaysFriction;
+            side.stiffness = Mathf.Clamp(slip - currentSpeed / 1500, 1, slip);
+            wheel.sidewaysFriction = side;
+
+        }
+        foreach (var wheel in backWheels)
+        {
+            WheelFrictionCurve side = wheel.sidewaysFriction;
+            side.stiffness = Mathf.Clamp(slip - currentSpeed / 1000, 1, slip);
+            wheel.sidewaysFriction = side;
+        }
+
+        if (currentSpeed * 10 < 10000 * gear && gear > 1) currentSpeed -= ((Mathf.Abs(input.actions["Vertical"].ReadValue<float>()) * currentMaxSpeed) - currentSpeed) * (1 / gear) * Time.deltaTime;
 
         if (forwardDrive)
         {
@@ -83,6 +114,13 @@ public class CarController : MonoBehaviour
     void Brake()
     {
         float brakePress = input.actions["Brake"].ReadValue<float>();
+
+        if (input.actions["Brake"].IsPressed())
+        {
+            rmpCounter = Mathf.Lerp(rmpCounter, 1000, 10 * Time.deltaTime);
+            currentSpeed = Mathf.Lerp(currentSpeed, 0, Time.deltaTime);
+        }
+
         foreach (var wheel in frontWheels)
         {
             wheel.brakeTorque = brakeStrenght * brakePress;
@@ -106,10 +144,8 @@ public class CarController : MonoBehaviour
             if (dir < 0)
             {
                 dir = -1;
-                StopCoroutine(Switch());
+                //StopCoroutine(Switch());
             }
-
-            if (dir > 0 && speed[gear] != currentMaxSpeed) return;
 
             gear += (int)dir;
 
@@ -117,28 +153,40 @@ public class CarController : MonoBehaviour
 
             if (dir > 0 && gear < speed.Length)
             {
-                StopCoroutine(Switch());
-                StartCoroutine(Switch());
+                currentSpeed *= (Mathf.Abs(rmpCounter / 10000));
+                //StopCoroutine(Switch());
+                //StartCoroutine(Switch());
+                currentMaxSpeed = speed[gear];
+                rmpCounter = 1000;
             }
-            if (dir < 0) currentMaxSpeed = speed[gear];
+            if (dir < 0)
+            {
+                rmpCounter += 10000;
+                if (rmpCounter > 13000) canDrive = false;
+                currentMaxSpeed = speed[gear];
+            }
 
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
             gear = 0;
-            StopAllCoroutines();
+            rmpCounter += 10000;
+            if (rmpCounter > 13000) canDrive = false;
+            //StopAllCoroutines();
         }
         else if (Input.GetKeyDown(KeyCode.W) && gear == 0)
         {
             gear = 1;
-            StopCoroutine(Switch());
+            currentSpeed *= (Mathf.Abs(rmpCounter / 10000));
+            rmpCounter = 1000;
+            //StopCoroutine(Switch());
         }
     }
 
 
     IEnumerator Switch()
     {
-        currentMaxSpeed = speed[gear] / 5;
+        currentSpeed = speed[gear] * (Mathf.Abs(rmpCounter / 10000));
 
         while (currentMaxSpeed < speed[gear]) 
          {
