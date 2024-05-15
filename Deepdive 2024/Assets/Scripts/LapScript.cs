@@ -7,10 +7,11 @@ public class LapScript : MonoBehaviour
     #region checkpoint variables
 
     public List<GameObject> allCheckpoints;
+
     [SerializeField] GameObject currentCheckpoint;
     [SerializeField] Transform checkpointHolder;
+
     public int checkPointCount = 0;
-    private int requiredCheckpoints = 5;
     public int LapCount = 0;
 
     #endregion checkpoint variables
@@ -29,7 +30,8 @@ public class LapScript : MonoBehaviour
             {
                 allCheckpoints.Add(checkpointHolder.GetChild(i).gameObject);
             }
-        }   
+        }
+        currentCheckpoint = allCheckpoints[0];
     }
 
     /// <summary>
@@ -45,17 +47,6 @@ public class LapScript : MonoBehaviour
 
     #endregion unity start/update
 
-    /*
-    void Win()
-    {
-        switch (LapCount)
-        {
-            case 0:
-                break;
-        }
-    }
-    */
-
     #region checkpointCounters
 
     /// <summary>
@@ -66,7 +57,7 @@ public class LapScript : MonoBehaviour
     {
         {
             // hier wordt een functie aangeroepen
-            if (other.CompareTag("Checkpoint") && this.CompareTag("Player"))
+            if (other.CompareTag("Checkpoint") && other.gameObject == currentCheckpoint)
             {
                 PlayerCheckpointCounter();
             }
@@ -74,24 +65,19 @@ public class LapScript : MonoBehaviour
     }
 
     /// <summary>
-    /// telt de checkpoint op.
-    /// moet na een bepaald hoeveelheid checkpoints de lap optellen.
+    /// keeps count of the checkpoint.
+    /// adds lap after a certain amount of checkpoints.
     /// </summary>
     private void PlayerCheckpointCounter()
     {
+        print("Hello");
         checkPointCount++;
-        if (checkPointCount > allCheckpoints.Count)
+        if (checkPointCount >= allCheckpoints.Count)
         {
-            if (checkPointCount == allCheckpoints.Count - 1)
-            {
-                LapCount++;
-                if (LapCount > 0)
-                {
-                    checkPointCount = 0;
-                }
-            }
+            LapCount++;
+            checkPointCount = 0;
         }
+        currentCheckpoint = allCheckpoints[checkPointCount];
     }
-
     #endregion checkpointCounters
 }
