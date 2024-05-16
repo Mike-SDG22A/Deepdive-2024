@@ -32,11 +32,10 @@ public class CarController : MonoBehaviour
     float[] frontWheelY = new float[2];
     LapScript lapScript;
 
+    public float kmp;
+
     PlayerInput input;
     Rigidbody rb;
-
-    public float GetMaxSpeed() => speed[gear];
-    public float GetCurrentSpeed() => currentSpeed;
 
     void Start()
     {
@@ -64,6 +63,7 @@ public class CarController : MonoBehaviour
 
     void Update()
     {
+        kmp = currentSpeed / 75 * 3.6f;
         if (input.actions["Reset"].WasPressedThisFrame())
         {
             StartCoroutine(ResetCar());

@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,9 +12,8 @@ public class Timer : MonoBehaviour
     public Button retry;
 
     public float timer = 0f;
-    public Text displayText;
-    public Text besttime;
-    public Canvas timerui;
+    public TMP_Text timerText;
+    public Canvas canvas;
     public float startTime = 3f;
     public bool finished = false;
     public float fastesttime;
@@ -21,45 +21,56 @@ public class Timer : MonoBehaviour
     public RawImage orange;
     public RawImage green;
 
+    [SerializeField] CarController player;
+
+    [SerializeField] TMP_Text rpmText;
+    [SerializeField] TMP_Text speedText;
+
+
     void Start()
     {
-        Invoke("StartTimer", 3f);
+        //Invoke("StartTimer", 3f);
         finished = false;
-        LoadFastestTime();
-        StartCoroutine(TrafficLightSequence());
+        //LoadFastestTime();
+        //StartCoroutine(TrafficLightSequence());
 
     }
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.P)) { finished = true; }
+       // if (Input.GetKey(KeyCode.P)) { finished = true; }
 
-
+        speedText.text = player.kmp.ToString("F1") + " kph";
+        rpmText.text = player.rmpCounter.ToString("F0") + " rpm";
 
         if (!finished)
         {
+
             timer += Time.deltaTime;
-            displayText.text = timer.ToString("F2");
+
+            int min = (int)Mathf.Floor(timer / 60);
+
+            float tempTimer = timer - (60 * min);
+
+            string extraNumSec = "";
+            string extraNumMin = "";
+            if (tempTimer < 10) extraNumSec = "0";
+            if (min < 10) extraNumMin = "0";
+
+            string timeString = $"{extraNumMin}{min}.{extraNumSec}{tempTimer.ToString("F2")}".Replace('.', ':');
+
+            timerText.text = timeString;
         }
         if (finished)
         {
             mainmenu.gameObject.SetActive(true);
             retry.gameObject.SetActive(true);
-            if (timer < fastesttime)
-            {
-                fastesttime = timer;
-            }
-            displayText.text = "curent time: " + timer.ToString("F2");
-            besttime.text = "best time " + fastesttime.ToString("F2");
-
-            PlayerPrefs.SetFloat("FastestTime", fastesttime);
-
         }
     }
 
     public void StartTimer()
     {
-        timerui.gameObject.SetActive(true);
+        canvas.gameObject.SetActive(true);
         timer = 0f;
     }
     public void LoadFastestTime()
