@@ -32,7 +32,8 @@ public class LapScript : MonoBehaviour
                 allCheckpoints.Add(checkpointHolder.GetChild(i).gameObject);
             }
         }
-        currentCheckpoint = allCheckpoints[0];
+        checkPointCount = allCheckpoints.Count - 1;
+        currentCheckpoint = allCheckpoints[checkPointCount];
     }
 
     /// <summary>
@@ -40,7 +41,7 @@ public class LapScript : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if(LapCount == 3)
+        if(LapCount == 1)
         {
             Debug.Log("You Win!");
             timer.finished = true;
@@ -61,7 +62,7 @@ public class LapScript : MonoBehaviour
             // hier wordt een functie aangeroepen
             if (other.CompareTag("Checkpoint") && other.gameObject == currentCheckpoint)
             {
-                PlayerCheckpointCounter();
+                PlayerCheckpointCounter(other.gameObject);
             }
         }
     }
@@ -70,16 +71,19 @@ public class LapScript : MonoBehaviour
     /// keeps count of the checkpoint.
     /// adds lap after a certain amount of checkpoints.
     /// </summary>
-    private void PlayerCheckpointCounter()
+    private void PlayerCheckpointCounter(GameObject obj)
     {
-        print("Hello");
-        checkPointCount++;
-        if (checkPointCount >= allCheckpoints.Count)
+        print("Checkpoint reached");
+        if (checkPointCount == 0)
         {
             LapCount++;
-            checkPointCount = 0;
+            checkPointCount = allCheckpoints.Count - 1; // Reset de checkpoint teller naar het laatste checkpoint
         }
-        currentCheckpoint = allCheckpoints[checkPointCount];
+        else
+        {
+            checkPointCount--;
+        }
+        currentCheckpoint = allCheckpoints[checkPointCount]; // Update naar het volgende checkpoint
     }
     #endregion checkpointCounters
 }
