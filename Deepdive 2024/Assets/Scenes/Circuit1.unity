@@ -3946,6 +3946,7 @@ Transform:
   - {fileID: 1899713525}
   - {fileID: 1275941725}
   - {fileID: 568012053}
+  - {fileID: 1178879936}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &836808883
@@ -5854,6 +5855,59 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1170834252}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.46868864, y: 5.0311737, z: 11.402891}
+  m_Center: {x: 0.26565608, y: 2.0155869, z: -2.5312195}
+--- !u!1 &1178879935
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1178879936}
+  - component: {fileID: 1178879937}
+  m_Layer: 0
+  m_Name: checkpoint (48)
+  m_TagString: Checkpoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1178879936
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1178879935}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.12435755, z: -0, w: -0.9922375}
+  m_LocalPosition: {x: 0.8801575, y: -46.96772, z: 37.315434}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 825667479}
+  m_LocalEulerAnglesHint: {x: 0, y: -374.287, z: 0}
+--- !u!65 &1178879937
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1178879935}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -9978,6 +10032,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ai Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 8041739552468777011, guid: fd1d85c629ad43246bc78449685cd382,
+        type: 3}
+      propertyPath: checkpoints.Array.size
+      value: 49
       objectReference: {fileID: 0}
     - target: {fileID: 8041739552468777011, guid: fd1d85c629ad43246bc78449685cd382,
         type: 3}
