@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "CameraSwitching",
+                    "type": "Button",
+                    "id": "bd5bfc89-83c5-4f01-849f-32b4f2b52900",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -434,6 +443,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Drift",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d694310d-ef16-4a2c-ac03-6249732c5a60",
+                    "path": "<Keyboard>/F",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraSwitching",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "614b73b7-71b9-47e1-ab52-d655521195c1",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraSwitching",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraScript : MonoBehaviour
 {
@@ -8,11 +9,37 @@ public class CameraScript : MonoBehaviour
     [SerializeField] private Transform Target; // where the camera should look.
     [SerializeField] private float TranlateSpeed; // how fast the camera should follow the car.
     [SerializeField] private float RotationSpeed; // how fast the camera should turn with the car.
-    private void FixedUpdate()
+    [SerializeField] GameObject firstPersonCamera;
+    [SerializeField] GameObject thirdPersonCamera;
+
+    PlayerInput input;
+
+    private void Start()
     {
+        input = FindObjectOfType<PlayerInput>();
+    }
+    private void Update()
+    {
+
         HandleTranslation();
         HandleRotation();
+
+        SwitchCamera();
     }
+
+    #region first/third person methods
+
+    void SwitchCamera()
+    {
+        if (input.actions["CameraSwitching"].WasPerformedThisFrame())
+        {
+            print(!firstPersonCamera.active);
+            firstPersonCamera.active = !firstPersonCamera.active;
+            thirdPersonCamera.active = !thirdPersonCamera.active;
+        }
+    }
+
+    #endregion end methods
 
     #region handlers
 
@@ -22,7 +49,7 @@ public class CameraScript : MonoBehaviour
     private void HandleTranslation()
     {
         var TargetPosition = Target.TransformPoint(Offset);
-        transform.position = Vector3.Lerp(transform.position, TargetPosition, TranlateSpeed * Time.deltaTime);
+        thirdPersonCamera.transform.position = Vector3.Lerp(thirdPersonCamera.transform.position, TargetPosition, TranlateSpeed * Time.deltaTime);
     }
 
     /// <summary>
@@ -30,9 +57,9 @@ public class CameraScript : MonoBehaviour
     /// </summary>
     private void HandleRotation()
     {
-        var direction = Target.position - transform.position;
+        var direction = Target.position - thirdPersonCamera.transform.position;
         var rotation = Quaternion.LookRotation(direction, Vector3.up);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, RotationSpeed * Time.deltaTime);
+        thirdPersonCamera.transform.rotation = Quaternion.Lerp(thirdPersonCamera.transform.rotation, rotation, RotationSpeed * Time.deltaTime);
     }
 
     #endregion end handlers
