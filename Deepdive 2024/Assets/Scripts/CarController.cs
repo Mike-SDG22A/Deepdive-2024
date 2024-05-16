@@ -30,6 +30,7 @@ public class CarController : MonoBehaviour
     WheelFrictionCurve sideFriction;
     WheelFrictionCurve forwardFriction;
     float[] frontWheelY = new float[2];
+    LapScript lapScript;
 
     PlayerInput input;
     Rigidbody rb;
@@ -39,6 +40,8 @@ public class CarController : MonoBehaviour
 
     void Start()
     {
+        lapScript = GetComponent<LapScript>(); 
+
         for (int i = 0; i < frontWheelY.Length; i++)
         {
             frontWheelY[i] = frontWheelsObj[i].eulerAngles.y;
@@ -61,39 +64,46 @@ public class CarController : MonoBehaviour
 
     void Update()
     {
-        Shift();
-        if (canDrive) Movement();
+        if (input.actions["Reset"].WasPressedThisFrame())
+        {
+            StartCoroutine(ResetCar());
+        }
         else
         {
-            currentSpeed = 0;
-
-            foreach (var wheel in frontWheels)
+            Shift();
+            if (canDrive) Movement();
+            else
             {
-                wheel.motorTorque = 0;
+                currentSpeed = 0;
+
+                foreach (var wheel in frontWheels)
+                {
+                    wheel.motorTorque = 0;
+                }
+                foreach (var wheel in backWheels)
+                {
+                    wheel.motorTorque = 0;
+                }
             }
-            foreach (var wheel in backWheels)
+            Brake();
+            Drift();
+
+            if (rb.velocity.sqrMagnitude < 10 && gear != 0)
             {
-                wheel.motorTorque = 0;
+                gear = 1;
+                currentMaxSpeed = speed[gear];
+                rmpCounter = 1000;
             }
+
+            Turn();
+
+            SetWheelPostion();
         }
-        Brake();
-        Drift();
-
-        if (rb.velocity.sqrMagnitude < 10 && gear != 0)
-        {
-            gear = 1;
-            currentMaxSpeed = speed[gear];
-            rmpCounter = 1000;
-        }
-
-        Turn();
-
-        SetWheelPostion();
     }
 
     private void FixedUpdate()
     {
-        rb.AddRelativeForce(Vector3.down * downForce * rb.velocity.sqrMagnitude * 0.6f, ForceMode.Force);
+        rb.AddRelativeForce(Vector3.down * downForce * rb.velocity.sqrMagnitude * 0.3f, ForceMode.Force);
         rb.AddForce(Vector3.down * downForce * rb.velocity.sqrMagnitude * 0.3f, ForceMode.Force);
     }
 
@@ -303,17 +313,26 @@ public class CarController : MonoBehaviour
         return curve;
      }
 
-    IEnumerator Switch()
+    IEnumerator ResetCar()
     {
-        currentSpeed = speed[gear] * (Mathf.Abs(rmpCounter / 10000));
+        float time = 0;
 
-        while (currentMaxSpeed < speed[gear]) 
+        rb.isKinematic = true;
+
+        while (time < 1) 
          {
-            currentMaxSpeed = currentMaxSpeed + (speed[gear] - currentMaxSpeed) * Time.deltaTime;
+            print(transform.position == lapScript.allCheckpoints[lapScript.checkPointCount + 1].transform.position + Vector3.up * 10);
+            if (transform.position == lapScript.allCheckpoints[lapScript.checkPointCount + 1].transform.position + Vector3.up * 10) time += Time.deltaTime;
 
-
-            if (currentMaxSpeed + speed[gear] / 10 >= speed[gear]) currentMaxSpeed = speed[gear];
+            rb.velocity = Vector3.zero;
+            transform.position = lapScript.allCheckpoints[lapScript.checkPointCount + 1].transform.position + Vector3.up * 10;
+            transform.rotation = Quaternion.LookRotation(lapScript.allCheckpoints[lapScript.checkPointCount].transform.position - transform.position);
+            
+            
             yield return null;
-         }
+        }
+        
+        rb.isKinematic = false;
+
     }
 }
