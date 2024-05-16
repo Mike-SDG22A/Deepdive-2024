@@ -34,6 +34,8 @@ public class CarController : MonoBehaviour
 
     public float kmp;
 
+    [SerializeField] TrailRenderer[] backTrail;
+
     PlayerInput input;
     Rigidbody rb;
 
@@ -87,6 +89,14 @@ public class CarController : MonoBehaviour
             }
             Brake();
             Drift();
+
+            if (!input.actions["Drift"].IsPressed() && !input.actions["Brake"].IsPressed())
+            {
+                foreach (var trail in backTrail)
+                {
+                    trail.emitting = false;
+                }
+            }
 
             if (rb.velocity.sqrMagnitude < 10 && gear != 0)
             {
@@ -184,6 +194,11 @@ public class CarController : MonoBehaviour
     {
         if (input.actions["Drift"].IsPressed())
         {
+            foreach(var trail in backTrail)
+            {
+                trail.emitting = true;
+            }
+
             float horizontal = input.actions["Horizontal"].ReadValue<float>();
 
             rb.AddForce((transform.right * -horizontal + transform.forward * 0.2f + rb.velocity.normalized * 0.2f) * currentSpeed, ForceMode.Force);
@@ -231,6 +246,11 @@ public class CarController : MonoBehaviour
         {
             rmpCounter = Mathf.Lerp(rmpCounter, 1000, 10 * Time.deltaTime);
             currentSpeed = Mathf.Lerp(currentSpeed, 0,  Time.deltaTime);
+
+            foreach (var trail in backTrail)
+            {
+                trail.emitting = true;
+            }
         }
 
 

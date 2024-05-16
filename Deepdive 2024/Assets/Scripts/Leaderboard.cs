@@ -28,7 +28,9 @@ public class Leaderboard : MonoBehaviour
     Board currentBoard = new Board();
     Timer timer;
     [SerializeField] GameObject submitArea;
-    [SerializeField] TMP_InputField nameField;
+    [SerializeField] GameObject menuButtons;
+    [SerializeField] TMP_Text nameField;
+    [SerializeField] RankPanel[] rankPanels;
 
     public string name;
 
@@ -37,6 +39,9 @@ public class Leaderboard : MonoBehaviour
         timer = FindObjectOfType<Timer>();
         for(int i  = 0; i < 10; i++)
         if (leaderBoards.Count == 0) { leaderBoards = LoadBoard(); }
+
+        GenerateLeaderBoardUI();
+
     }
 
     // Update is called once per frame
@@ -45,11 +50,11 @@ public class Leaderboard : MonoBehaviour
         currentBoard.value = timer.timer;
     }
 
-    void AddToBoard(Board board)
+    public void AddToBoard(Board board)
     {
         bool isBetter = false;
 
-        if (leaderBoards.Count == 0) isBetter = true;
+        if (leaderBoards.Count < 10) isBetter = true;
         else
         {
             foreach (var bo in leaderBoards)
@@ -62,12 +67,33 @@ public class Leaderboard : MonoBehaviour
 
         if (isBetter)
         {
+            menuButtons.SetActive(false);
             submitArea.SetActive(true);
         }
 
 
     }
 
+    void GenerateLeaderBoardUI()
+    {
+        for (int i = 0; i < leaderBoards.Count; i++)
+        {
+            rankPanels[i].nameText.text = leaderBoards[i].name;
+
+            int min = (int)Mathf.Floor(leaderBoards[i].value / 60);
+
+            float tempTimer = leaderBoards[i].value - (60 * min);
+
+            string extraNumSec = "";
+            string extraNumMin = "";
+            if (tempTimer < 10) extraNumSec = "0";
+            if (min < 10) extraNumMin = "0";
+
+            string timeString = $"{extraNumMin}{min}.{extraNumSec}{tempTimer.ToString("F2")}".Replace('.', ':');
+
+            rankPanels[i].timeText.text = timeString;
+        }
+    }
 
     public void Submit()
     {
@@ -83,12 +109,17 @@ public class Leaderboard : MonoBehaviour
             leaderBoards.Add(currentBoard);
         }
 
+        submitArea.SetActive(false);
+        menuButtons.SetActive(true);
+
         OrderBoard();
     }
 
     public void OrderBoard()
     {
         leaderBoards = leaderBoards.OrderBy(x => x.value).ToList();
+        SaveJson();
+        GenerateLeaderBoardUI();
     }
 
 
@@ -128,7 +159,7 @@ public class Leaderboard : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"No JSON file found for key 'Json{i}'.");
+                Debug.LogError($"No JSON file found for key 'JsonBoard{i}'.");
             }
         }
         return boards;

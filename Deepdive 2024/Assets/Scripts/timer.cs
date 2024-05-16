@@ -8,12 +8,11 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    public Button mainmenu;
-    public Button retry;
-
     public float timer = 0f;
     public TMP_Text timerText;
     public Canvas canvas;
+    public GameObject gui;
+    public GameObject endScreen;
     public float startTime = 3f;
     public bool finished = false;
     public float fastesttime;
@@ -25,10 +24,12 @@ public class Timer : MonoBehaviour
 
     [SerializeField] TMP_Text rpmText;
     [SerializeField] TMP_Text speedText;
-
+    Leaderboard leaderboard;
+    bool onlyOnce = false;
 
     void Start()
     {
+        leaderboard = FindObjectOfType<Leaderboard>();
         //Invoke("StartTimer", 3f);
         finished = false;
         //LoadFastestTime();
@@ -61,10 +62,12 @@ public class Timer : MonoBehaviour
 
             timerText.text = timeString;
         }
-        if (finished)
+        if (finished && !onlyOnce)
         {
-            mainmenu.gameObject.SetActive(true);
-            retry.gameObject.SetActive(true);
+            onlyOnce = true;
+            gui.SetActive(false);
+            endScreen.SetActive(true);
+            leaderboard.AddToBoard(new Board("---", timer));
         }
     }
 
