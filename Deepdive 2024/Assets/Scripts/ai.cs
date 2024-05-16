@@ -19,7 +19,10 @@ public class ai : MonoBehaviour
 
     void Update()
     {
-
+        if (Vector3.Distance(checkpoints[currentCheckpointIndex].position, transform.position) < 5) 
+        {
+            GoToNextCheckpoint();
+        }
     }
 
     void GoToNextCheckpoint()
@@ -30,7 +33,7 @@ public class ai : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Checkpoint"))
+        if (other.CompareTag("Checkpoint") && other.gameObject == checkpoints[currentCheckpointIndex])
         {
             Debug.Log("test");
             GoToNextCheckpoint();

@@ -2,6 +2,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class CarController : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class CarController : MonoBehaviour
     [SerializeField] bool backDrive = false;
     [SerializeField] WheelCollider[] frontWheels;
     [SerializeField] WheelCollider[] backWheels;
+    [SerializeField] Transform[] frontWheelsObj;
+    [SerializeField] Transform[] backWheelsObj;
     [SerializeField] float[] speed = new float[] { -600, 1200, 2400, 4800 };
     [SerializeField] float currentMaxSpeed;
     [SerializeField] float turnAngle = 60;
@@ -26,6 +29,7 @@ public class CarController : MonoBehaviour
     float forwardSlip;
     WheelFrictionCurve sideFriction;
     WheelFrictionCurve forwardFriction;
+    float[] frontWheelY = new float[2];
 
     PlayerInput input;
     Rigidbody rb;
@@ -35,6 +39,11 @@ public class CarController : MonoBehaviour
 
     void Start()
     {
+        for (int i = 0; i < frontWheelY.Length; i++)
+        {
+            frontWheelY[i] = frontWheelsObj[i].eulerAngles.y;
+        }
+
         sideFriction = backWheels[0].sidewaysFriction;
         forwardFriction = backWheels[0].forwardFriction;
         forwardSlip = backWheels[0].forwardFriction.stiffness;
@@ -78,12 +87,29 @@ public class CarController : MonoBehaviour
         }
 
         Turn();
+
+        SetWheelPostion();
     }
 
     private void FixedUpdate()
     {
-        rb.AddRelativeForce(Vector3.down * downForce * rb.velocity.sqrMagnitude * 0.8f, ForceMode.Force);
-        rb.AddForce(Vector3.down * downForce * rb.velocity.sqrMagnitude * 0.2f, ForceMode.Force);
+        rb.AddRelativeForce(Vector3.down * downForce * rb.velocity.sqrMagnitude * 0.6f, ForceMode.Force);
+        rb.AddForce(Vector3.down * downForce * rb.velocity.sqrMagnitude * 0.3f, ForceMode.Force);
+    }
+
+    void SetWheelPostion()
+    {
+        for (int i = 0; i < frontWheels.Length; i++) 
+        {
+            frontWheels[i].GetWorldPose(out Vector3 fPos, out Quaternion fRot);
+            backWheels[i].GetWorldPose(out Vector3 bPos, out Quaternion bRot);
+            
+            frontWheelsObj[i].position = fPos;
+            backWheelsObj[i].position = bPos;
+
+            frontWheelsObj[i].rotation = fRot;
+            backWheelsObj[i].rotation = bRot;
+        }
     }
 
     void Turn()
@@ -217,10 +243,12 @@ public class CarController : MonoBehaviour
             if (dir > 0)
             {
                 dir = 1;
+                if (gear == 3) return;
             }
             if (dir < 0)
             {
                 dir = -1;
+                if (gear == 0) return;
                 //StopCoroutine(Switch());
             }
 
