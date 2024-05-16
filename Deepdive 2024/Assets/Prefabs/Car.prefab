@@ -48,7 +48,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
-  m_Mass: 30
+  m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 1.5
@@ -119,7 +119,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
-  m_Mass: 30
+  m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 1.5
@@ -190,7 +190,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1846180536547875381}
   serializedVersion: 4
-  m_Mass: 2500
+  m_Mass: 1760
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: -1, z: 0}
@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6793b0346fb1cae4380cc105d602505e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardDrive: 1
+  forwardDrive: 0
   backDrive: 1
   frontWheels:
   - {fileID: 4588527297170111462}
@@ -235,10 +235,12 @@ MonoBehaviour:
   - 2400
   - 4800
   currentMaxSpeed: 0
-  turnAngle: 60
+  turnAngle: 30
   brakeStrenght: 2000
   currentSpeed: 0
   currentTurnAngle: 0
+  fDriftSlip: 1
+  sDriftSlip: 1
   rmpCounter: 0
   gear: 1
   downForce: 75
@@ -389,7 +391,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -563,7 +565,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
-  m_Mass: 30
+  m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 1.5
@@ -634,7 +636,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
-  m_Mass: 30
+  m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 1.5
