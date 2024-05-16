@@ -43,6 +43,7 @@ public class Timer : MonoBehaviour
         }
         if (finished)
         {
+            Time.timeScale = 0;
             mainmenu.gameObject.SetActive(true);
             retry.gameObject.SetActive(true);
             if (timer < fastesttime)
