@@ -351,7 +351,8 @@ public class CarController : MonoBehaviour
             
             yield return null;
         }
-        
+
+        canDrive = true;
         rb.isKinematic = false;
 
     }
